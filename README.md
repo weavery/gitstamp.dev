@@ -19,8 +19,8 @@ The Git commit metadata is recorded on the blockweave as follows:
 ## Specification
 
 Each timestamped commit corresponds to an Arweave transaction where the
-commit message is as-is stored as the transaction data and various commit
-metadata is stored in transaction tags.
+commit message is as-is stored as the transaction data, and where various
+commit metadata are stored in transaction tags.
 
 For each timestamped commit, the corresponding Arweave transaction contains
 the following metadata tags:
@@ -30,24 +30,26 @@ Tag                  | Value                    |
 `Content-Type`       | `"text/plain"`           |
 `App-Name`           | `"Gitstamp"`             |
 `Git-Commit`         | SHA-1 hash (hexadecimal) |
-`Git-Commit-Link`    | URL (optional)           |
-`Git-Author`         | author identifier        |
-`Git-Committer`      | author identifier        |
-`Git-Committer-Date` | timestamp                |
+`Git-Commit-Link`    | optional URL             |
+`Git-Author`         | author URI               |
+`Git-Committer`      | author URI               |
+`Git-Committer-Date` | ISO-8601 timestamp       |
 
 Note that the `Git-Commit-Link` tag is optional, since we do wish to support
-the use case of timestamping commits to nonpublic code repositories without
+the use case of timestamping commits in nonpublic code repositories without
 leaking the URL of said code repository.
 
-Author identifiers can be given as an email address or as the author's
-profile URL at the code hosting service (for example, GitHub or GitLab).
-We strongly recommend the latter due to the better privacy profile of not
+Author URIs can be given either as a `mailto:` URI containing the author's
+email address or using the author's profile URL at the code hosting service
+(for example, GitHub or GitLab) the commit was submitted from. When possible,
+we strongly recommend the latter due to the better privacy profile of not
 leaking personal email addresses into a permanent record.
 
 ## Usage
 
 The easiest way to timestamp your Git commits is to use our [GitHub Actions
-integration](https://github.com/artob/gitstamp-action).
+integration](https://github.com/artob/gitstamp-action), where every push to
+your GitHub repository timestamps the `HEAD` commit.
 
 Future integrations with GitLab and Bitbucket are planned.
 
