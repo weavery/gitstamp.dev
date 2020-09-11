@@ -10,7 +10,10 @@ function parseAuthor(author) {
   if (author.startsWith('https://bitbucket.org/')) {
     return {service: 'bitbucket', link: author, name: author.replace(/\/$/, '').match(/([^\/]+)$/g)};
   }
-  return {service: null, link: null, name: author}; // unknown, or an email address
+  if (author.startsWith('mailto:')) {
+    return {service: 'email', link: author, name: author.replace('mailto:', '')};
+  }
+  return {service: null, link: null, name: author}; // unknown
 }
 
 function renderCommit(transactionID) {
@@ -23,7 +26,7 @@ function renderCommit(transactionID) {
         <h5 class="card-title" id="commit-${transactionID}-title"></h5>
         <h6 class="card-subtitle mb-2 text-muted">
           by
-          <img id="commit-${transactionID}-author-icon" src="github.svg" class="commit-author-icon"/>
+          <img id="commit-${transactionID}-author-icon" src="email.svg" class="commit-author-icon"/>
           <a id="commit-${transactionID}-author" href="#"></a>
           on <span id="commit-${transactionID}-date"></span>
         </h6>
@@ -49,51 +52,47 @@ async function load(event) {
 
     $('#commits').append(renderCommit(transactionID));
 
-    try {
-      arweave.transactions.getData(transactionID, {decode: true, string: true})
-        .then(data => {
-          const [title, ...body] = data.split("\n");
-          $(`#commit-${transactionID}-title`).text(title);
-          if (body.length > 0) {
-            $(`#commit-${transactionID}-message`).text(body.join("\n")).show();
+    arweave.transactions.getData(transactionID, {decode: true, string: true})
+      .then(data => {
+        const [title, ...body] = data.split("\n");
+        $(`#commit-${transactionID}-title`).text(title);
+        if (body.length > 0) {
+          $(`#commit-${transactionID}-message`).text(body.join("\n")).show();
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        $(`#commit-${transactionID}`).hide();
+      });
+
+    arweave.transactions.get(transactionID)
+      .then(transaction => {
+        transaction.get('tags').forEach(tag => {
+          const key = tag.get('name', {decode: true, string: true});
+          const value = tag.get('value', {decode: true, string: true});
+          switch (key) {
+            case 'Git-Commit':
+              $(`#commit-${transactionID}-id`).text(value);
+              break;
+            case 'Git-Commit-Link':
+              $(`#commit-${transactionID}-link`).attr('href', value).show();
+              break;
+            case 'Git-Author':
+              const author = parseAuthor(value);
+              $(`#commit-${transactionID}-author`).attr('href', author.link);
+              $(`#commit-${transactionID}-author`).text((author.service == 'email' ? '' : '@') + author.name);
+              $(`#commit-${transactionID}-author-icon`).attr('src', author.service + ".svg");
+              break;
+            case 'Git-Committer-Date':
+              $(`#commit-${transactionID}-date`).text(value.replace('T', ' '));
+              break;
           }
         });
-    }
-    catch (error) {  // pending transaction
-      console.error(error);
-      $(`#commit-${transactionID}`).hide();
-    }
-
-    try {
-      arweave.transactions.get(transactionID)
-        .then(transaction => {
-          transaction.get('tags').forEach(tag => {
-            const key = tag.get('name', {decode: true, string: true});
-            const value = tag.get('value', {decode: true, string: true});
-            switch (key) {
-              case 'Git-Commit':
-                $(`#commit-${transactionID}-id`).text(value);
-                break;
-              case 'Git-Commit-Link':
-                $(`#commit-${transactionID}-link`).attr('href', value).show();
-                break;
-              case 'Git-Author':
-                const author = parseAuthor(value);
-                $(`#commit-${transactionID}-author`).attr('href', author.link);
-                $(`#commit-${transactionID}-author`).text('@' + author.name);
-                $(`#commit-${transactionID}-author-icon`).attr('src', author.service + ".svg");
-                break;
-              case 'Git-Committer-Date':
-                $(`#commit-${transactionID}-date`).text(value);
-                break;
-            }
-          });
-        });
-    }
-    catch (error) {  // pending transaction
-      console.error(error);
-      $(`#commit-${transactionID}`).hide();
-    }
+      })
+      .catch(error => {
+        console.error(error);
+        $(`#commit-${transactionID}`).hide();
+      });
   }
 }
 
