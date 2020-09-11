@@ -56,3 +56,10 @@ Future integrations with GitLab and Bitbucket are planned.
 [Gitstamp]:       https://gitstamp.dev
 [Arweave]:        https://www.arweave.org
 [Arweave wallet]: https://www.arweave.org/wallet
+
+## Costs
+
+Each Arweave transaction requires an enclosed transaction fee to pay for
+transaction processing and permanent storage on the Arweave network.
+In practice, this works out to less than USD$0.00001 per timestamped commit.
+(In other words, a USD$1 wallet will suffice for at least 100,000 commits.)
