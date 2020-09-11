@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Visual Studio Code
+.vscode/
+
+# Editor backup files
+*~
+
+# Pandoc outputs
+*.html
+
+# NPM packages
+node_modules/
