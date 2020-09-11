@@ -51,11 +51,12 @@ The easiest way to timestamp your Git commits is to use our [GitHub Actions
 integration](https://github.com/artob/gitstamp-action), where every push to
 your GitHub repository timestamps the `HEAD` commit.
 
-Future integrations with GitLab and Bitbucket are planned.
+(Future integrations with GitLab and Bitbucket are planned.)
 
-[Gitstamp]:       https://gitstamp.dev
-[Arweave]:        https://www.arweave.org
-[Arweave wallet]: https://www.arweave.org/wallet
+In case you wish to submit your transactions locally, you can use the
+[`scripts/gitstamp.rb`] script.
+
+[`scripts/gitstamp.rb`]: https://github.com/artob/gitstamp.dev/blob/master/scripts/gitstamp.rb
 
 ## Costs
 
@@ -63,3 +64,7 @@ Each Arweave transaction requires an enclosed transaction fee to pay for
 transaction processing and permanent storage on the Arweave network.
 In practice, this works out to less than USD$0.00001 per timestamped commit.
 (In other words, a USD$1 wallet will suffice for at least 100,000 commits.)
+
+[Gitstamp]:       https://gitstamp.dev
+[Arweave]:        https://www.arweave.org
+[Arweave wallet]: https://www.arweave.org/wallet
