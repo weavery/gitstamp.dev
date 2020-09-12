@@ -65,6 +65,22 @@ transaction processing and permanent storage on the Arweave network.
 In practice, this works out to less than USD$0.00001 per timestamped commit.
 (In other words, a USD$1 wallet will suffice for at least 100,000 commits.)
 
+## Querying
+
+### Querying with ArQL
+
+To retrieve all timestamped commits using [ArQL], query for the tag
+`App-Name`:
+
+```javascript
+{
+  op: "equals",
+  expr1: "App-Name",
+  expr2: "Gitstamp"
+}
+```
+
 [Gitstamp]:       https://gitstamp.dev
 [Arweave]:        https://www.arweave.org
 [Arweave wallet]: https://www.arweave.org/wallet
+[ArQL]:           https://github.com/ArweaveTeam/arweave-js#arql
