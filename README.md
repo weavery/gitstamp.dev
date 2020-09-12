@@ -109,7 +109,7 @@ query {
 
 The aforementioned query returns results with the following structure:
 
-```json
+```javascript
 {
   "data": {
     "transactions": {
