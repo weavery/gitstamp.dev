@@ -80,7 +80,88 @@ To retrieve all timestamped commits using [ArQL], query for the tag
 }
 ```
 
+Note that ArQL does not support pagination, so you probably want to use
+GraphQL instead.
+
+### Querying with GraphQL
+
+Here's a basic example of retrieving timestamped commits using [GraphQL]:
+
+```graphql
+query {
+  transactions(tags: [{name: "App-Name", values: "Gitstamp"}]) {
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        tags {
+          name,
+          value
+        }
+      }
+    }
+  }
+}
+```
+
+The aforementioned query returns results with the following structure:
+
+```json
+{
+  "data": {
+    "transactions": {
+      "pageInfo": {
+        "hasNextPage": true
+      },
+      "edges": [
+        {
+          "cursor": "WyIyMDIwLTA5LTEyVDEyOjMzOjUwLjc5OVoiLDFd",
+          "node": {
+            "id": "ieW3p3tfEDLMOcwF_mLWfzbF89G5Tau__bY7mkFab7Y",
+            "tags": [
+              {
+                "name": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "name": "App-Name",
+                "value": "Gitstamp"
+              },
+              {
+                "name": "Git-Commit",
+                "value": "c1308c5f19d90ddb09a99e31f8c9c12951696b1b"
+              },
+              {
+                "name": "Git-Commit-Link",
+                "value": "https://github.com/artob/gitstamp.dev/commit/c1308c5f19d90ddb09a99e31f8c9c12951696b1b"
+              },
+              {
+                "name": "Git-Author",
+                "value": "https://github.com/artob"
+              },
+              {
+                "name": "Git-Committer",
+                "value": "https://github.com/artob"
+              },
+              {
+                "name": "Git-Committer-Date",
+                "value": "2020-09-12T15:25:06+03:00"
+              }
+            ]
+          }
+        }
+        // ...
+      ]
+    }
+  }
+}
+```
+
 [Gitstamp]:       https://gitstamp.dev
 [Arweave]:        https://www.arweave.org
 [Arweave wallet]: https://www.arweave.org/wallet
 [ArQL]:           https://github.com/ArweaveTeam/arweave-js#arql
+[GraphQL]:        https://arweave.dev/graphql
