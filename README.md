@@ -53,10 +53,14 @@ your GitHub repository timestamps the `HEAD` commit.
 
 (Future integrations with GitLab and Bitbucket are planned.)
 
-In case you wish to submit your transactions locally, you can use the
-[`scripts/gitstamp.rb`] script.
+In case you wish to submit your commits from a local Git repository, you can
+use the [Gitstamp command-line interface (CLI)](https://github.com/artob/gitstamp-cli):
 
-[`scripts/gitstamp.rb`]: https://github.com/artob/gitstamp.dev/blob/master/scripts/gitstamp.rb
+```bash
+$ cd /path/to/git/repository
+
+$ gitstamp publish --wallet /path/to/arweave-keyfile.json
+```
 
 ## Costs
 
