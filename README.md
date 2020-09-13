@@ -160,8 +160,15 @@ The aforementioned query returns results with the following structure:
 }
 ```
 
+## See Also
+
+This repository is mirrored on [GitHub], [GitLab], and [Bitbucket].
+
 [Gitstamp]:       https://gitstamp.dev
 [Arweave]:        https://www.arweave.org
 [Arweave wallet]: https://www.arweave.org/wallet
 [ArQL]:           https://github.com/ArweaveTeam/arweave-js#arql
 [GraphQL]:        https://arweave.dev/graphql
+[GitHub]:         https://github.com/artob/gitstamp.dev
+[GitLab]:         https://gitlab.com/artob/gitstamp.dev
+[Bitbucket]:      https://bitbucket.org/artob/gitstamp.dev
