@@ -1,0 +1,12 @@
+---
+image: ruby:2.7.1
+
+gitstamp:
+  stage: test
+  script:
+    - apt-get update -y
+    - apt-get install -y cmake libgit2-dev
+    - gem install gitstamp
+    - gitstamp publish $CI_COMMIT_SHA --wallet $GITSTAMP_KEYFILE --author https://gitlab.com/$GITLAB_USER_LOGIN --committer https://gitlab.com/$GITLAB_USER_LOGIN --link $CI_PROJECT_URL/-/commit/$CI_COMMIT_SHA
+  only:
+    - master
