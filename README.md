@@ -47,7 +47,7 @@ leaking personal email addresses into a permanent record.
 
 ## Usage
 
-### GitHub Actions
+### Usage with GitHub Actions
 
 The easiest way to timestamp your Git commits is to use our [GitHub Actions
 integration](https://github.com/artob/gitstamp-action), where every push to
@@ -57,10 +57,10 @@ To use the GitHub Actions integration, you will need to configure a repository
 or organization secret named `GITSTAMP_KEYFILE` to contain your Arweave JWK
 wallet file.
 
-### GitLab CI
+### Usage with GitLab CI
 
 See the [`.gitlab-ci.yml`] configuration in this repository for an example of
-how to configure GitLab CI to publish your commits when they are pushed to
+how to configure GitLab CI to timestamp your commits when they are pushed to
 GitLab.
 
 To use the GitLab CI integration, you will need to configure an environment
@@ -69,11 +69,11 @@ wallet file.
 
 [`.gitlab-ci.yml`]: https://github.com/artob/gitstamp.dev/blob/master/.gitlab-ci.yml
 
-### Bitbucket Pipelines
+### Usage with Bitbucket Pipelines
 
 A future integration with Bitbucket is planned.
 
-### Git
+### Usage with Git
 
 In case you wish to submit your commits from a local Git repository, you can
 use the [Gitstamp command-line interface (CLI)](https://github.com/artob/gitstamp-cli):
