@@ -1,7 +1,7 @@
 # Gitstamp
 
 [![Project license](https://img.shields.io/badge/license-Public%20Domain-blue.svg)](https://unlicense.org)
-[![Gitstamp](https://github.com/artob/gitstamp.dev/workflows/Gitstamp/badge.svg)](https://github.com/artob/gitstamp.dev/actions?query=workflow%3AGitstamp)
+[![Gitstamp](https://github.com/weavery/gitstamp.dev/workflows/Gitstamp/badge.svg)](https://github.com/weavery/gitstamp.dev/actions?query=workflow%3AGitstamp)
 
 [Gitstamp] is a specification and service for timestamping Git commits using
 the [Arweave] permaweb.
@@ -14,7 +14,7 @@ later than at the time when it was timestamped.
 
 The Git commit metadata is recorded on the blockweave as follows:
 
-<img alt="Screenshot of Gitstamp metadata" src="https://raw.githubusercontent.com/artob/gitstamp-action/master/sample.png" width="480"/>
+<img alt="Screenshot of Gitstamp metadata" src="https://raw.githubusercontent.com/weavery/gitstamp-action/master/sample.png" width="480"/>
 
 ## Specification
 
@@ -50,7 +50,7 @@ leaking personal email addresses into a permanent record.
 ### Usage with GitHub Actions
 
 The easiest way to timestamp your Git commits is to use our [GitHub Actions
-integration](https://github.com/artob/gitstamp-action), where every push to
+integration](https://github.com/weavery/gitstamp-action), where every push to
 your GitHub repository timestamps the `HEAD` commit.
 
 To use the GitHub Actions integration, you will need to configure a repository
@@ -67,7 +67,7 @@ To use the GitLab CI integration, you will need to configure an environment
 variable (of type _File_) named `GITSTAMP_KEYFILE` to contain your Arweave JWK
 wallet file.
 
-[`.gitlab-ci.yml`]: https://github.com/artob/gitstamp.dev/blob/master/.gitlab-ci.yml
+[`.gitlab-ci.yml`]: https://github.com/weavery/gitstamp.dev/blob/master/.gitlab-ci.yml
 
 ### Usage with Bitbucket Pipelines
 
@@ -76,7 +76,7 @@ A future integration with Bitbucket is planned.
 ### Usage with Git
 
 In case you wish to submit your commits from a local Git repository, you can
-use the [Gitstamp command-line interface (CLI)](https://github.com/artob/gitstamp-cli):
+use the [Gitstamp command-line interface (CLI)](https://github.com/weavery/gitstamp-cli):
 
 ```bash
 $ cd /path/to/git/repository
@@ -198,6 +198,6 @@ This repository is mirrored on [GitHub], [GitLab], and [Bitbucket].
 [Arweave wallet]: https://www.arweave.org/wallet
 [ArQL]:           https://github.com/ArweaveTeam/arweave-js#arql
 [GraphQL]:        https://arweave.dev/graphql
-[GitHub]:         https://github.com/artob/gitstamp.dev
-[GitLab]:         https://gitlab.com/artob/gitstamp.dev
-[Bitbucket]:      https://bitbucket.org/artob/gitstamp.dev
+[GitHub]:         https://github.com/weavery/gitstamp.dev
+[GitLab]:         https://gitlab.com/weavery/gitstamp.dev
+[Bitbucket]:      https://bitbucket.org/weavery/gitstamp.dev
