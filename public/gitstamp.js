@@ -37,62 +37,86 @@ function renderCommit(transactionID) {
     </div>`;
 }
 
+async function query({ query, variables = null }) {
+  const graphql = JSON.stringify({
+    query,
+    variables,
+  });
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: graphql,
+  };
+  const res = await fetch("https://arweave.dev/graphql", requestOptions);
+  return await res.clone().json();
+}
+
 async function load(event) {
   const arweave = Arweave.init();
   arweave.network.getInfo().then(console.log);  // DEBUG
 
-  const transactionIDs = await arweave.arql({
-    op: "equals",
-    expr1: "App-Name",
-    expr2: "Gitstamp"
-  });
+  const txs = (await query({
+    query: `
+    query {
+      transactions(
+        tags: [{ name: "App-Name", values: "Gitstamp" }]
+        first: 2147483647
+      ) {
+        edges {
+          node {
+            id
+            tags {
+              name
+              value
+            }
+          }
+        }
+      }
+    }  
+    `
+  })).data.transactions.edges;
 
-  for (const transactionID of transactionIDs) {
-    console.log(`Loading transaction ${transactionID}...`);
+  for (const tx of txs) {
+    console.log(`Loading transaction ${tx.node.id}...`);
 
-    $('#commits').append(renderCommit(transactionID));
+    $('#commits').append(renderCommit(tx.node.id));
 
-    arweave.transactions.getData(transactionID, {decode: true, string: true})
+    arweave.transactions.getData(tx.node.id, {decode: true, string: true})
       .then(data => {
         const [title, ...body] = data.split("\n");
-        $(`#commit-${transactionID}-title`).text(title);
+        $(`#commit-${tx.node.id}-title`).text(title);
         if (body.length > 0) {
-          $(`#commit-${transactionID}-message`).text(body.join("\n")).show();
+          $(`#commit-${tx.node.id}-message`).text(body.join("\n")).show();
         }
       })
       .catch(error => {
         console.error(error);
-        $(`#commit-${transactionID}`).hide();
+        $(`#commit-${tx.node.id}`).hide();
       });
 
-    arweave.transactions.get(transactionID)
-      .then(transaction => {
-        transaction.get('tags').forEach(tag => {
-          const key = tag.get('name', {decode: true, string: true});
-          const value = tag.get('value', {decode: true, string: true});
-          switch (key) {
-            case 'Git-Commit':
-              $(`#commit-${transactionID}-id`).text(value);
-              break;
-            case 'Git-Commit-Link':
-              $(`#commit-${transactionID}-link`).attr('href', value).show();
-              break;
-            case 'Git-Author':
-              const author = parseAuthor(value);
-              $(`#commit-${transactionID}-author`).attr('href', author.link);
-              $(`#commit-${transactionID}-author`).text((author.service == 'email' ? '' : '@') + author.name);
-              $(`#commit-${transactionID}-author-icon`).attr('src', author.service + ".svg");
-              break;
-            case 'Git-Committer-Date':
-              $(`#commit-${transactionID}-date`).text(value.replace('T', ' '));
-              break;
-          }
-        });
-      })
-      .catch(error => {
-        console.error(error);
-        $(`#commit-${transactionID}`).hide();
-      });
+    tx.node.tags.forEach(tag => {
+      const key = tag.name;
+      const value = tag.value;
+      switch (key) {
+        case 'Git-Commit':
+          $(`#commit-${tx.node.id}-id`).text(value);
+          break;
+        case 'Git-Commit-Link':
+          $(`#commit-${tx.node.id}-link`).attr('href', value).show();
+          break;
+        case 'Git-Author':
+          const author = parseAuthor(value);
+          $(`#commit-${tx.node.id}-author`).attr('href', author.link);
+          $(`#commit-${tx.node.id}-author`).text((author.service == 'email' ? '' : '@') + author.name);
+          $(`#commit-${tx.node.id}-author-icon`).attr('src', author.service + ".svg");
+          break;
+        case 'Git-Committer-Date':
+          $(`#commit-${tx.node.id}-date`).text(value.replace('T', ' '));
+          break;
+      }
+    })
   }
 }
 
